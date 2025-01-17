@@ -6,7 +6,7 @@ import ModeToggle from './ModeToggle';
 import OddsTradingValues from './OddsTradingValues';
 import MatchEvents from './MatchEvents';
 import OddsTrends from './OddsTrends';
-import { mockLiveScores } from '../services/mockData'; // Import mock data
+import { mockLiveScores } from '../services/mockData'; 
 
 const LiveScores = () => {
   const [scores, setScores] = useState([]);
@@ -18,7 +18,7 @@ const LiveScores = () => {
   useEffect(() => {
     const getScores = async () => {
       const { data, isMock } = await fetchLiveScores();
-      console.log('API Response:', data); // Log the response data
+      console.log('API Response:', data); 
       setScores(data);
       setIsMock(isMock);
 
@@ -31,11 +31,9 @@ const LiveScores = () => {
     };
 
     getScores();
+    //axios poling
+    const intervalId = setInterval(getScores, 30000);
 
-    // Set up polling to fetch scores every 30 seconds
-    const intervalId = setInterval(getScores, 30000); // 30 seconds
-
-    // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -51,22 +49,16 @@ const LiveScores = () => {
     filter === 'all' || match.t1.includes(filter) || match.t2.includes(filter) || match.series.includes(filter)
   );
 
-  // Composite odds generator considering multiple factors
   const generateOdds = (team1, team2, team1Score, team2Score) => {
-    // Extract scores
     const team1Runs = parseInt(team1Score.split('/')[0]);
     const team2Runs = parseInt(team2Score.split('/')[0]);
 
-    // Simulate key player performance factor
-    const keyPlayerFactor = (Math.random() * 0.2 + 0.9).toFixed(2); // Random factor between 0.9 and 1.1
+    const keyPlayerFactor = (Math.random() * 0.2 + 0.9).toFixed(2);
 
-    // Simulate historical data factor
-    const historicalFactor = (Math.random() * 0.2 + 0.9).toFixed(2); // Random factor between 0.9 and 1.1
+    const historicalFactor = (Math.random() * 0.2 + 0.9).toFixed(2); 
 
-    // Simulate match condition factor
-    const matchConditionFactor = (Math.random() * 0.2 + 0.9).toFixed(2); // Random factor between 0.9 and 1.1
+    const matchConditionFactor = (Math.random() * 0.2 + 0.9).toFixed(2);
 
-    // Composite score difference factor
     const scoreDifference = team1Runs - team2Runs;
     const baseOdds = 1.5;
 
@@ -76,7 +68,6 @@ const LiveScores = () => {
     return { team1Odds, team2Odds };
   };
 
-  // Assign mock data's events and odds to first 5 matches of each category
   const assignMockData = (matches, mockMatches) => {
     return matches.map((match, index) => {
       if (index < 5 && mockMatches[index]) {
@@ -111,15 +102,15 @@ const LiveScores = () => {
       <h1 className="text-2xl font-bold text-center mb-4">CricKing</h1>
       <h2 className="text-xl font-bold text-center mb-4 mt-2">BIG BASH LEAGUE</h2>
 
+      {/** Dark Mode Toggle Button */}
       <div className='text-center mb-4 mt-4'>
         <ModeToggle />
       </div>
-      {/* Indicator for data source */}
       <p className={`mb-4 text-center ${isMock ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}>
         {isMock ? 'Currently displaying mock data due to API limits.' : 'Live data from API.'}
       </p>
       
-      {/* Filter Dropdown */}
+      {/** Filters */}
       <div className="mb-4 text-center">
         <label htmlFor="filter" className="block text-lg font-semibold mb-2">Filter by:</label>
         { isMock? 
@@ -132,7 +123,6 @@ const LiveScores = () => {
         <option value="West Indies [WI]">West Indies [WI]</option>
         <option value="MI Cape Town [MICT]">MI Cape Town [MICT]</option>
         <option value="Sunrisers Eastern Cape [SEC]">Sunrisers Eastern Cape [SEC]</option>
-        {/* Add more options as needed */}
       </select> : 
       <select id='filter' value={filter} onChange={handleFilterChange} className='p-2 border rounded-md shadow-sm dark:bg-gray-800 dark:text-white dark:border-gray-600'>
         <option value="all">All</option>
@@ -184,7 +174,7 @@ const LiveScores = () => {
         </div>
       )}
    
-               {/* Section for Finished Matches */}
+      {/* Section for Finished Matches */}
       {finishedMatches.length > 0 && (
         <div className='mt-4 mb-4 shadow-lg shadow-green-500 rounded-lg p-4 dark:bg-gray-800 dark:text-white'>
           <h2 className="text-xl font-semibold mb-2 text-center">Finished Matches</h2>
@@ -208,6 +198,7 @@ const LiveScores = () => {
           </ul>
         </div>
       )}
+
       {/* Section for Matches Not Started */}
       {upcomingMatches.length > 0 && (
         <div className='shadow-lg shadow-yellow-500 rounded-lg p-4'>
@@ -243,4 +234,3 @@ const LiveScores = () => {
 };
 
 export default LiveScores;
-
