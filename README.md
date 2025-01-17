@@ -43,6 +43,7 @@ The application fetches live data from the CricAPI. If the API call fails or exc
 - Filtering by team names
 
 ## Future Goals
+- **Mobile App Conversion**
 - **Notifications**: Implement real-time notifications for score updates or significant match events.
 - **Historical Data and Statistics**: Integrate historical match data and player statistics for deeper insights.
 - **User Authentication and Personalization**: Allow users to create accounts and personalize their experience.
